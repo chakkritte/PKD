@@ -65,3 +65,19 @@ save_image(prediction_t, 'teacher.png')
 save_image(prediction_s, 'student.png')
 
 print(prediction_t.size())
+
+#################### visual color ##############
+
+import cv2
+#input
+background = cv2.imread('test.jpg')
+#saliency prediction
+saliency = cv2.imread('teacher.png', 0)
+heatmap = cv2.applyColorMap(saliency, cv2.COLORMAP_HOT)
+
+added_image = cv2.addWeighted(background,0.8, heatmap, 0.8, 0)
+
+cv2.imwrite('combined.png', added_image)
+
+#cv2.imshow('heatmap', added_image)
+#cv2.waitKey()
