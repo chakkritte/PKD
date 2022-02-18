@@ -8,9 +8,7 @@ import os, cv2
 from PIL import Image, ImageOps
 from scipy import io
 import random
-# import kornia as K
 
-# from pytorch_lightning import seed_everything
 # seed_everything(42, workers=True)
 
 def _get_file_list(data_path):

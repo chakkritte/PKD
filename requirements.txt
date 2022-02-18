@@ -1,2 +1,4 @@
 darmo
 timm
+kornia
+cv2

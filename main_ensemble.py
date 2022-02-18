@@ -8,13 +8,8 @@ from utils import AverageMeter
 import time
 import sys
 import timm
-from timm.models import model_parameters
-from torch.optim.swa_utils import AveragedModel, update_bn, SWALR
-from adamp import AdamP
 import torch.backends.cudnn as cudnn
 import random
-from torch.optim.swa_utils import AveragedModel, SWALR
-from torch.optim.lr_scheduler import CosineAnnealingLR
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -277,22 +272,12 @@ def train(student, optimizer, loader, epoch, device, args, teacher, teacher2):
     total_loss = 0.0
     cur_loss = 0.0
 
-    #resize_list = [384, 416, 480]
-    # active_resolution = random.choice(range(8, 13)) * 32
-
     for idx, (img, gt, fixations) in enumerate(loader):
         img = img.to(device)
         gt = gt.to(device)
         fixations = fixations.to(device)
 
         optimizer.zero_grad()
-
-        # #multi-sclae training (320-640 pixels) every 10 batches
-        # if (idx+1) % 10 == 0:
-        #   active_resolution = random.choice(range(8, 13)) * 32
-
-        # img = torch.nn.functional.interpolate(img, size=active_resolution, mode='bicubic', align_corners=False)
-        # #print(img.size())
 
         if args.mode == "kd":
             if args.mixed:
@@ -397,10 +382,6 @@ for epoch in range(0, args.no_epochs):
     if args.lr_sched:
         scheduler.step()
 
-    # if epoch > swa_start:
-    #     swa_model.update_parameters(student)
-    #     swa_scheduler.step()
-
     with torch.no_grad():
         if args.mode == "kd":
             _ = validate(teacher, val_loader, epoch, device)
@@ -416,10 +397,6 @@ for epoch in range(0, args.no_epochs):
             print('[{:2d},  save, {}]'.format(epoch, args.model_val_path))
             save_state_dict(student , teacher, args)
         print()
-
-# Update bn statistics for the swa_model at the end
-# torch.optim.swa_utils.update_bn(train_loader, swa_model)
-# cc_loss = validate(swa_model, val_loader, 0, device)
 
 end = time.time()
 print("Time = ",  ((end - start))/60, " Min")

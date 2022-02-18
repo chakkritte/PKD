@@ -9,8 +9,6 @@ import time
 import sys
 import timm
 from timm.models import model_parameters
-from torch.optim.swa_utils import AveragedModel, update_bn, SWALR
-from adamp import AdamP
 import torch.backends.cudnn as cudnn
 
 import warnings
@@ -176,7 +174,6 @@ teacher = OFA595(num_channels=3, train_enc=True, load_weight=1, output_size=args
 #teacher = VGGModel(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
 #teacher = ResNetModel1k(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
 #teacher = DenseModel(num_channels=3, train_enc=True, load_weight=1,)
-
 #teacher = EfficientNetB4(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
 
 if args.dataset != "salicon":
@@ -261,21 +258,12 @@ def train(student, optimizer, loader, epoch, device, args, teacher):
     total_loss = 0.0
     cur_loss = 0.0
 
-    #resize_list = [384, 416, 480]
-    #active_resolution = random.choice(range(12, 21)) * 32
-
     for idx, (img, gt, fixations) in enumerate(loader):
         img = img.to(device)
         gt = gt.to(device)
         fixations = fixations.to(device)
 
         optimizer.zero_grad()
-
-        # multi-sclae training (320-640 pixels) every 10 batches
-        #if (idx+1) % 10 == 0:
-        #    active_resolution = random.choice(range(12, 21)) * 32
-
-        #img = torch.nn.functional.interpolate(img, size=active_resolution, mode='bicubic', align_corners=False)
 
         if args.mode == "kd":
             with torch.cuda.amp.autocast():

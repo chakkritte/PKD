@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-# import antialiased_cnns
 
 # A memory-efficient implementation of Swish function
 class SwishImplementation(torch.autograd.Function):

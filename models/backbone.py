@@ -172,7 +172,6 @@ class DenseModel(nn.Module):
         self.deconv_layer5 = nn.Sequential(
             nn.Conv2d(in_channels = 128, out_channels = 128, kernel_size = 3, padding = 1, bias = True),
             nn.ReLU(inplace=True),
-            #ReadOut(128, 1),
             nn.Conv2d(in_channels = 128, out_channels = 1, kernel_size = 3, padding = 1, bias = True),
             nn.Sigmoid()
         )
@@ -388,9 +387,7 @@ class VGGModel(nn.Module):
         self.deconv_layer5 = nn.Sequential(
             nn.Conv2d(in_channels = 128, out_channels = 128, kernel_size = 3, padding = 1, bias = True),
             nn.ReLU(inplace=True),
-            #ReadOut(128, 1),
             nn.Conv2d(in_channels = 128, out_channels = 1, kernel_size = 3, padding = 1, bias = True),
-            #nn.Conv2d(in_channels = 5*1, out_channels = 1, kernel_size = 3, padding = 1, bias = True),
             nn.Sigmoid()
         )
         self.blur = kornia.filters.GaussianBlur2d((11, 11), (10.5, 10.5))
@@ -632,7 +629,6 @@ class ResNetModelCustom(nn.Module):
         self.deconv_layer5 = nn.Sequential(
             nn.Conv2d(in_channels = 64, out_channels = 64, kernel_size = 3, padding = 1, bias = True),
             nn.ReLU(inplace=True),
-            #ReadOut(64, 1),
             nn.Conv2d(in_channels = 64, out_channels = 1, kernel_size = 3, padding = 1, bias = True),
             nn.Sigmoid()
         )
