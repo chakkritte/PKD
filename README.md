@@ -2,7 +2,7 @@
 
 **This paper has been accepted to IEEE Transactions on Industrial Informatics.**
 
-Paper (soon): [IEEE]()
+Paper (soon): [IEEE Transactions on Industrial Informatics]()
 
 This offical implementation of PKD (Pseudo Knowledge Distillation) from On-device Saliency Prediction based on Pseudo Knowledge Distillation by [Chakkrit Termritthikun](https://chakkritte.github.io/cv/).
 
@@ -11,6 +11,21 @@ This offical implementation of PKD (Pseudo Knowledge Distillation) from On-devic
 ## Prerequisite for server
  - Tested on Ubuntu OS version 18.04.x
  - Tested on PyTorch 1.6 and TorchVision 0.7.0
+
+## Usage (soon)
+
+### Cloning source code
+
+```
+git clone https://github.com/chakkritte/PKD/
+cd PKD
+```
+
+### Install Requirements
+
+```
+pip install -r requirements.txt
+```
 
 ## Citation (soon)
 
