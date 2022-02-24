@@ -2,7 +2,7 @@
 
 **This paper has been accepted to IEEE Transactions on Industrial Informatics.**
 
-Paper (soon): [IEEE Transactions on Industrial Informatics]()
+Paper: [IEEE Transactions on Industrial Informatics](https://ieeexplore.ieee.org/document/9720080)
 
 This offical implementation of PKD (Pseudo Knowledge Distillation) from On-device Saliency Prediction based on Pseudo Knowledge Distillation by [Chakkrit Termritthikun](https://chakkritte.github.io/cv/).
 
