@@ -31,7 +31,15 @@ pip install -r requirements.txt
 
 If you use PKD or any part of this research, please cite our paper:
 ```
-
+@ARTICLE{9720080,
+  author={Umer, Ayaz and Termritthikun, Chakkrit and Qiu, Tie and Leong, Philip Heng Wai and Lee, Ivan},
+  journal={IEEE Transactions on Industrial Informatics}, 
+  title={On-device Saliency Prediction based on Pseudo Knowledge Distillation}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/TII.2022.3153365}}
 ```
 ## License 
 
