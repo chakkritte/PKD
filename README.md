@@ -6,13 +6,15 @@ Paper: [IEEE Transactions on Industrial Informatics](https://ieeexplore.ieee.org
 
 This offical implementation of PKD (Pseudo Knowledge Distillation) from On-device Saliency Prediction based on Pseudo Knowledge Distillation by [Chakkrit Termritthikun](https://chakkritte.github.io/cv/).
 
+<p align="center">
+  <img src="img/PKD.jpg" alt="PKD">
+</p>
+
 **This code is based on the implementation of  [EML-NET-Saliency](https://github.com/SenJia/EML-NET-Saliency), [SimpleNet](https://github.com/samyak0210/saliency), [MSI-Net](https://github.com/alexanderkroner/saliency), and [EEEA-Net](https://github.com/chakkritte/EEEA-Net).**
 
 ## Prerequisite for server
- - Tested on Ubuntu OS version 18.04.x
- - Tested on PyTorch 1.6 and TorchVision 0.7.0
-
-## Usage (soon)
+ - Tested on Ubuntu OS version 20.04.x
+ - Tested on PyTorch 1.10.2 and TorchVision 0.11.3
 
 ### Cloning source code
 
@@ -21,13 +23,51 @@ git clone https://github.com/chakkritte/PKD/
 cd PKD
 ```
 
+### Creating new environments
+
+```
+conda create -n pkd python=3.6
+conda activate pkd
+conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
+```
+
 ### Install Requirements
 
 ```
 pip install -r requirements.txt
 ```
 
-## Citation (soon)
+## Usage
+
+### Training Salicon dataset (Teacher: OFA595, Student: EEEA-C2)
+```
+python main.py --student eeeac2 --teacher ofa595 --dataset salicon
+```
+
+## Architecture Transfer
+
+
+### Training MIT1003 dataset (Teacher: OFA595, Student: EEEA-C2)
+```
+python main.py --student eeeac2 --teacher ofa595 --dataset mit1003
+```
+
+### Training CAT2000 dataset (Teacher: OFA595, Student: EEEA-C2)
+```
+python main.py --student eeeac2 --teacher ofa595 --dataset cat2000
+```
+
+### Training PASCALS dataset (Teacher: OFA595, Student: EEEA-C2)
+```
+python main.py --student eeeac2 --teacher ofa595 --dataset pascals
+```
+
+### Training OSIE dataset (Teacher: OFA595, Student: EEEA-C2)
+```
+python main.py --student eeeac2 --teacher ofa595 --dataset osie
+```
+
+## Citation
 
 If you use PKD or any part of this research, please cite our paper:
 ```

@@ -1,4 +1,6 @@
 darmo
 timm
 kornia
-cv2
+opencv-python
+ptflops
+h5py

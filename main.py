@@ -10,16 +10,16 @@ import sys
 import timm
 from timm.models import model_parameters
 import torch.backends.cudnn as cudnn
-
+from ptflops import get_model_complexity_info
 import warnings
 warnings.filterwarnings("ignore")
 
 parser = ArgumentParser()
 parser.add_argument("--learning_rate", type=float, default=0.0001)
 parser.add_argument("--batch_size", type=int, default=64)
-parser.add_argument("--dataset_dir", type=str, default="/home/mllab/proj/2021/supernet/data/")
-parser.add_argument('--input_size_h',default=256, type=int)
-parser.add_argument('--input_size_w',default=256, type=int)
+parser.add_argument("--dataset_dir", type=str, default="data/")
+parser.add_argument('--input_size_h',default=384, type=int)
+parser.add_argument('--input_size_w',default=384, type=int)
 parser.add_argument('--no_workers',default=16, type=int)
 parser.add_argument('--no_epochs',default=10, type=int)
 parser.add_argument('--log_interval',default=20, type=int)
@@ -41,20 +41,15 @@ parser.add_argument('--l1_coeff',default=1.0, type=float)
 parser.add_argument('--auc_coeff',default=1.0, type=float)
 
 parser.add_argument('--dataset',default="salicon", type=str)
-parser.add_argument('--model',default="efb0", type=str)
+
+parser.add_argument('--student',default="eeeac2", type=str)
+parser.add_argument('--teacher',default="ofa595", type=str)
 parser.add_argument('--readout',default="simple", type=str)
 parser.add_argument('--output_size', default=(480, 640))
 
 parser.add_argument('--mode',default="kd", type=str)
 parser.add_argument('--seed',default=3407, type=int)
 args = parser.parse_args()
-
-# np.random.seed(args.seed)
-# cudnn.benchmark = False
-# cudnn.deterministic = True
-# torch.manual_seed(args.seed)
-# cudnn.enabled=True
-# torch.cuda.manual_seed(args.seed)
 
 def model_load_state_dict(student , teacher, path_state_dict):
     if args.mode == "kd":
@@ -85,29 +80,44 @@ def loss_func(pred_map, gt, fixations, args):
 if args.dataset != "salicon":
     args.output_size = (384, 384)
 
-if args.model == "eeeac2":
+if args.student == "eeeac2":
     student = EEEAC2(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-elif args.model == "eeeac1":
+elif args.student == "eeeac1":
     student = EEEAC1(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-elif args.model == "mbv2":
+elif args.student == "mbv2":
     student = MobileNetV2(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-elif args.model == "mbv3":
+elif args.student == "mbv3":
     student = MobileNetV3_1k(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-elif args.model == "efb0":
+elif args.student == "efb0":
     student = EfficientNet(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-elif args.model == "efb4":
+elif args.student == "efb4":
     student = EfficientNetB4(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-elif args.model == "efb7":
+elif args.student == "efb7":
     student = EfficientNetB7(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-elif args.model == "ghostnet":
+elif args.student == "ghostnet":
     student = GhostNet(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-elif args.model == "rest":
+elif args.student == "rest":
     student = ResT(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
+
+if args.teacher == "ofa595":
+    teacher = OFA595(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
+elif args.teacher == "tresnet":
+    teacher = tresnet(num_channels=3, train_enc=True, load_weight=1, pretrained='1k', output_size=args.output_size)
+elif args.teacher == "mbv3":
+    teacher = MobileNetV3_1k(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
+elif args.teacher == "efb0":
+    teacher = EfficientNet(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
+elif args.teacher == "efb4":
+    teacher = EfficientNetB4(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
+elif args.teacher == "efb7":
+    teacher = EfficientNetB7(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
+elif args.teacher == "pnas":
+    teacher = PNASModel(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
+elif args.teacher == "vgg":
+    teacher = VGGModel(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
 
 torch.multiprocessing.freeze_support()
 
-#args.output_size = [args.input_size_h, args.input_size_w]
-#args.input_size = 384
 print(args.dataset)
 
 if args.dataset == 'salicon':
@@ -155,31 +165,11 @@ elif args.dataset == 'fiwi':
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.no_workers, pin_memory=True)
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.no_workers, pin_memory=True)
 
-#teacher = ResNestModel(num_channels=3, train_enc=True, load_weight=1, model='resnest50', output_size=args.output_size)
-#teacher = ResNetModelCustom(num_channels=3, train_enc=True, load_weight=1,)
-#teacher = tresnet(num_channels=3, train_enc=True, load_weight=1,)
-#teacher = MobileNetV3_21k(num_channels=3, train_enc=True, load_weight=1,)
-#teacher = OFA595(num_channels=3, train_enc=True, load_weight=1,)
-
 if args.dataset != "salicon":
     args.output_size = (384, 384)
 
-#1k
-teacher = OFA595(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-#teacher = tresnet(num_channels=3, train_enc=True, load_weight=1, pretrained='1k', output_size=args.output_size)
-#teacher = ResNestModel(num_channels=3, train_enc=True, load_weight=1)
-#teacher = MobileNetV3_1k(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
-#teacher = EfficientNet(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
-#teacher = PNASModel(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
-#teacher = VGGModel(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
-#teacher = ResNetModel1k(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size)
-#teacher = DenseModel(num_channels=3, train_enc=True, load_weight=1,)
-#teacher = EfficientNetB4(num_channels=3, train_enc=True, load_weight=1, output_size=args.output_size, readout=args.readout)
-
 if args.dataset != "salicon":
     model_load_state_dict(student , teacher, "pre-trained/model_ofa1k.pt")
-
-from ptflops import get_model_complexity_info
 
 print("Teacher:")
 macs, params = get_model_complexity_info(teacher, (3, args.input_size, args.input_size), as_strings=True,
@@ -270,18 +260,12 @@ def train(student, optimizer, loader, epoch, device, args, teacher):
                 pred_map = teacher(img)
                 loss = loss_func(pred_map, gt, fixations, args)
 
-            #loss.backward()
-            #scaler.scale(loss).backward()
-
         with torch.cuda.amp.autocast():
             pred_map_student = student(img)
             if args.mode == "kd":
                 loss_s = loss_func(pred_map_student, pred_map.detach(), fixations, args)
             else :
                 loss_s = loss_func(pred_map_student, gt, fixations, args)
-
-        #loss.backward(retain_graph=True)
-        #scaler.scale(loss_s).backward(retain_graph=True)
 
         if args.mode == "kd":
             scaler.scale(loss + loss_s).backward()
@@ -295,7 +279,6 @@ def train(student, optimizer, loader, epoch, device, args, teacher):
             total_loss += loss_s.item()
             cur_loss += loss_s.item()
         
-        #optimizer.step()
         scaler.step(optimizer)
         scaler.update()
 
@@ -330,7 +313,7 @@ def save_state_dict(student , teacher, args):
             params = {
                 'student': student.state_dict(),
             }
-    torch.save(params, args.model_val_path)
+    torch.save(params, args.student_val_path)
 
 scaler = torch.cuda.amp.GradScaler()
 
@@ -351,6 +334,6 @@ for epoch in range(0, args.no_epochs):
             best_loss = cc_loss
         if best_loss <= cc_loss:
             best_loss = cc_loss
-            print('[{:2d},  save, {}]'.format(epoch, args.model_val_path))
+            print('[{:2d},  save, {}]'.format(epoch, args.student_val_path))
             save_state_dict(student , teacher, args)
         print()
