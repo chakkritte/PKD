@@ -4,3 +4,5 @@ kornia
 opencv-python
 ptflops
 h5py
+scikit-image
+requests

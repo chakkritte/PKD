@@ -15,6 +15,7 @@ This offical implementation of PKD (Pseudo Knowledge Distillation) from On-devic
 ## Prerequisite for server
  - Tested on Ubuntu OS version 20.04.x
  - Tested on PyTorch 1.10.2 and TorchVision 0.11.3
+ - Tested on NVIDIA V100 32 GB (four cards)
 
 ### Cloning source code
 
@@ -41,7 +42,7 @@ pip install -r requirements.txt
 
 ### Training Salicon dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
-python main.py --student eeeac2 --teacher ofa595 --dataset salicon
+python main.py --student eeeac2 --teacher ofa595 --dataset salicon --model_val_path model_salicon.pt
 ```
 
 ## Architecture Transfer
@@ -49,22 +50,22 @@ python main.py --student eeeac2 --teacher ofa595 --dataset salicon
 
 ### Training MIT1003 dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
-python main.py --student eeeac2 --teacher ofa595 --dataset mit1003
+python main.py --student eeeac2 --teacher ofa595 --dataset mit1003 --model_val_path model_mit1003.pt
 ```
 
 ### Training CAT2000 dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
-python main.py --student eeeac2 --teacher ofa595 --dataset cat2000
+python main.py --student eeeac2 --teacher ofa595 --dataset cat2000 --model_val_path model_cat2000.pt
 ```
 
 ### Training PASCALS dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
-python main.py --student eeeac2 --teacher ofa595 --dataset pascals
+python main.py --student eeeac2 --teacher ofa595 --dataset pascals --model_val_path model_pascals.pt
 ```
 
 ### Training OSIE dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
-python main.py --student eeeac2 --teacher ofa595 --dataset osie
+python main.py --student eeeac2 --teacher ofa595 --dataset osie --model_val_path model_osie.pt
 ```
 
 ## Citation
@@ -81,6 +82,7 @@ If you use PKD or any part of this research, please cite our paper:
   pages={1-1},
   doi={10.1109/TII.2022.3153365}}
 ```
+
 ## License 
 
 Apache-2.0 License

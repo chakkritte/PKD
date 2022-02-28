@@ -22,6 +22,7 @@ parser.add_argument('--no_epochs',default=10, type=int)
 parser.add_argument('--log_interval',default=20, type=int)
 parser.add_argument('--lr_sched',default=True, type=bool)
 parser.add_argument('--model_val_path',default="model.pt", type=str)
+parser.add_argument('--model_salicon_path',default="model_salicon.pt", type=str)
 
 parser.add_argument('--kldiv',default=True, type=bool)
 parser.add_argument('--cc',default=True, type=bool)
@@ -137,8 +138,6 @@ elif args.teacher == "vgg":
 
 torch.multiprocessing.freeze_support()
 
-#args.output_size = [args.input_size_h, args.input_size_w]
-#args.input_size = 384
 print(args.dataset)
 
 if args.dataset == 'salicon':
@@ -190,7 +189,7 @@ if args.dataset != "salicon":
     args.output_size = (384, 384)
 
 if args.dataset != "salicon":
-    model_load_state_dict(student , teacher, "pre-trained/model_ofa1k.pt")
+    model_load_state_dict(student , teacher, args.model_salicon_path)
 
 print("Teacher:")
 macs, params = get_model_complexity_info(teacher, (3, args.input_size, args.input_size), as_strings=True,

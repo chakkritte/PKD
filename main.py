@@ -14,7 +14,7 @@ warnings.filterwarnings("ignore")
 parser = ArgumentParser()
 parser.add_argument("--learning_rate", type=float, default=0.0001)
 parser.add_argument("--batch_size", type=int, default=64)
-parser.add_argument("--dataset_dir", type=str, default="data/")
+parser.add_argument("--dataset_dir", type=str, default="/home/chakkritt/proj/datasets/")
 parser.add_argument('--input_size_h',default=384, type=int)
 parser.add_argument('--input_size_w',default=384, type=int)
 parser.add_argument('--no_workers',default=16, type=int)
@@ -22,6 +22,7 @@ parser.add_argument('--no_epochs',default=10, type=int)
 parser.add_argument('--log_interval',default=20, type=int)
 parser.add_argument('--lr_sched',default=True, type=bool)
 parser.add_argument('--model_val_path',default="model.pt", type=str)
+parser.add_argument('--model_salicon_path',default="model_salicon.pt", type=str)
 
 parser.add_argument('--kldiv',default=True, type=bool)
 parser.add_argument('--cc',default=True, type=bool)
@@ -47,6 +48,7 @@ parser.add_argument('--output_size', default=(480, 640))
 
 parser.add_argument('--mode',default="kd", type=str)
 parser.add_argument('--seed',default=3407, type=int)
+
 args = parser.parse_args()
 
 def model_load_state_dict(student , teacher, path_state_dict):
@@ -167,7 +169,7 @@ if args.dataset != "salicon":
     args.output_size = (384, 384)
 
 if args.dataset != "salicon":
-    model_load_state_dict(student , teacher, "pre-trained/model_ofa1k.pt")
+    model_load_state_dict(student , teacher, args.model_salicon_path)
 
 print("Teacher:")
 macs, params = get_model_complexity_info(teacher, (3, args.input_size, args.input_size), as_strings=True,
