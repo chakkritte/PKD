@@ -22,6 +22,34 @@ This offical implementation of PKD (Pseudo Knowledge Distillation) from On-devic
 ```
 git clone https://github.com/chakkritte/PKD/
 cd PKD
+mkdir data
+```
+
+## The dataset folder structure:
+
+```
+PKD
+|__ data
+    |_ salicon
+      |_ fixations
+      |_ saliency
+      |_ stimuli
+    |_ mit1003
+      |_ fixations
+      |_ saliency
+      |_ stimuli
+    |_ cat2000
+      |_ fixations
+      |_ saliency
+      |_ stimuli
+    |_ pascals
+      |_ fixations
+      |_ saliency
+      |_ stimuli
+    |_ osie
+      |_ fixations
+      |_ saliency
+      |_ stimuli
 ```
 
 ### Creating new environments
@@ -40,7 +68,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Training Salicon dataset (Teacher: OFA595, Student: EEEA-C2)
+### Training on Salicon dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
 python main.py --student eeeac2 --teacher ofa595 --dataset salicon --model_val_path model_salicon.pt
 ```
@@ -48,22 +76,22 @@ python main.py --student eeeac2 --teacher ofa595 --dataset salicon --model_val_p
 ## Architecture Transfer
 
 
-### Training MIT1003 dataset (Teacher: OFA595, Student: EEEA-C2)
+### Training on MIT1003 dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
 python main.py --student eeeac2 --teacher ofa595 --dataset mit1003 --model_val_path model_mit1003.pt
 ```
 
-### Training CAT2000 dataset (Teacher: OFA595, Student: EEEA-C2)
+### Training on CAT2000 dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
 python main.py --student eeeac2 --teacher ofa595 --dataset cat2000 --model_val_path model_cat2000.pt
 ```
 
-### Training PASCALS dataset (Teacher: OFA595, Student: EEEA-C2)
+### Training on PASCALS dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
 python main.py --student eeeac2 --teacher ofa595 --dataset pascals --model_val_path model_pascals.pt
 ```
 
-### Training OSIE dataset (Teacher: OFA595, Student: EEEA-C2)
+### Training on OSIE dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
 python main.py --student eeeac2 --teacher ofa595 --dataset osie --model_val_path model_osie.pt
 ```
