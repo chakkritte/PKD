@@ -7,9 +7,6 @@ import torch.nn as nn
 from utils import AverageMeter
 import time
 import sys
-import timm
-from timm.models import model_parameters
-import torch.backends.cudnn as cudnn
 from ptflops import get_model_complexity_info
 import warnings
 warnings.filterwarnings("ignore")
@@ -44,6 +41,7 @@ parser.add_argument('--dataset',default="salicon", type=str)
 
 parser.add_argument('--student',default="eeeac2", type=str)
 parser.add_argument('--teacher',default="ofa595", type=str)
+
 parser.add_argument('--readout',default="simple", type=str)
 parser.add_argument('--output_size', default=(480, 640))
 
@@ -313,7 +311,7 @@ def save_state_dict(student , teacher, args):
             params = {
                 'student': student.state_dict(),
             }
-    torch.save(params, args.student_val_path)
+    torch.save(params, args.model_val_path)
 
 scaler = torch.cuda.amp.GradScaler()
 
@@ -334,6 +332,6 @@ for epoch in range(0, args.no_epochs):
             best_loss = cc_loss
         if best_loss <= cc_loss:
             best_loss = cc_loss
-            print('[{:2d},  save, {}]'.format(epoch, args.student_val_path))
+            print('[{:2d},  save, {}]'.format(epoch, args.model_val_path))
             save_state_dict(student , teacher, args)
         print()

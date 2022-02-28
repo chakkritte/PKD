@@ -1,7 +1,6 @@
 import os
 import zipfile
 import requests
-
 import io
 import h5py
 import numpy as np
