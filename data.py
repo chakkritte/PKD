@@ -9,8 +9,6 @@ from PIL import Image, ImageOps
 from scipy import io
 import random
 
-# seed_everything(42, workers=True)
-
 def _get_file_list(data_path):
     """This function detects all image files within the specified parent
        directory for either training or testing. The path content cannot

@@ -8,6 +8,7 @@ import requests
 from matplotlib.pyplot import imread, imsave
 from scipy.io import loadmat
 from scipy.ndimage import gaussian_filter
+import gdown
 
 def download_salicon(data_path):
     """Downloads the SALICON dataset. Three folders are then created that
@@ -41,15 +42,7 @@ def download_salicon(data_path):
     session = requests.Session()
 
     for count, url in enumerate(urls):
-        response = session.get(url, params={"id": id}, stream=True)
-        token = _get_confirm_token(response)
-
-        if token:
-            params = {"id": id, "confirm": token}
-            response = session.get(url, params=params, stream=True)
-
-        _save_response_content(response, data_path + "tmp.zip")
-
+        gdown.download(url, data_path + "tmp.zip", quiet=False)
         with zipfile.ZipFile(data_path + "tmp.zip", "r") as zip_ref:
             for file in zip_ref.namelist():
                 if "test" not in file:
@@ -418,20 +411,3 @@ def download_fiwi(data_path):
     os.remove(data_path + "tmp.zip")
 
     print("done!", flush=True)
-
-
-def _get_confirm_token(response):
-    for key, value in response.cookies.items():
-        if key.startswith("download_warning"):
-            return value
-
-    return None
-
-def _save_response_content(response, file_path):
-    chunk_size = 32768
-
-    with open(file_path, "wb") as data:
-        for chunk in response.iter_content(chunk_size):
-            if chunk:
-                data.write(chunk)
-
