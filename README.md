@@ -68,7 +68,7 @@ conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
 pip install -r requirements.txt --no-cache-dir
 ```
 
-## Pretrained models and Evaluation
+## Salicon Pretrained models and Evaluation
 
 1. Download Salicon pretrained models from 
 
