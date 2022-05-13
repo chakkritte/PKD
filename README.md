@@ -68,6 +68,28 @@ conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
 pip install -r requirements.txt --no-cache-dir
 ```
 
+## Pretrained models and Evaluation
+
+1. Download Salicon pretrained models from 
+
+```
+bash download_pretrained.sh
+```
+
+2. Change teacher parameter -> ofa595 or efb4 or pnas
+
+```
+python validate.py --dataset salicon --student eeeac2 --teacher ofa595
+```
+
+### Results of single teacher method for student (EEEA-Net-C2)
+
+|   **Teacher**   | **Student** |   **CC**↑  |   **KL**↓  |  **NSS**↑  | **Link** |
+|:---------------:|:-----------:|:----------:|:----------:|:----------:|:--------:|
+|      OFA595     | EEEA-Net-C2 | **0.9062** | **0.1907** |   1.9298   |   [Pretrained](https://github.com/chakkritte/PKD/releases/download/v1/model_ofa1k.pt)      |
+| EfficientNet-B4 | EEEA-Net-C2 |   0.9055   |   0.1924   | **1.9346** |  [Pretrained](https://github.com/chakkritte/PKD/releases/download/v1/model_efb4.pt)         |
+|    PNASNet-5    | EEEA-Net-C2 |   0.9044   |   0.1956   |   1.9319   |   [Pretrained](https://github.com/chakkritte/PKD/releases/download/v1/model_pnasnet5_1k.pt)         |
+
 ## Usage
 
 ### Training on Salicon dataset (Teacher: OFA595, Student: EEEA-C2)
@@ -76,7 +98,6 @@ python main.py --student eeeac2 --teacher ofa595 --dataset salicon --model_val_p
 ```
 
 ## Architecture Transfer
-
 
 ### Training on MIT1003 dataset (Teacher: OFA595, Student: EEEA-C2)
 ```
