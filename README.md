@@ -82,7 +82,7 @@ bash download_pretrained.sh
 python validate.py --dataset salicon --student eeeac2 --teacher ofa595
 ```
 
-### Results of single teacher method for student (EEEA-Net-C2)
+### Results of single teacher method for student (EEEA-Net-C2) on Salicon dataset
 
 |   **Teacher**   | **Student** |   **CC**↑  |   **KL**↓  |  **NSS**↑  | **Link** |
 |:---------------:|:-----------:|:----------:|:----------:|:----------:|:--------:|
