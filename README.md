@@ -1,10 +1,10 @@
-# On-device Saliency Prediction based on Pseudo Knowledge Distillation
+# On-Device Saliency Prediction Based on Pseudoknowledge Distillation
 
 **This paper has been accepted to IEEE Transactions on Industrial Informatics (IEEE TII).**
 
-Paper: [IEEE Transactions on Industrial Informatics](https://ieeexplore.ieee.org/document/9720080)
+Paper: [IEEE Transactions on Industrial Informatics](https://doi.org/10.1109/TII.2022.3153365)
 
-This offical implementation of PKD (Pseudo Knowledge Distillation) from On-device Saliency Prediction based on Pseudo Knowledge Distillation by [Chakkrit Termritthikun](https://chakkritte.github.io/cv/).
+This offical implementation of PKD (Pseudoknowledge Distillation) from On-Device Saliency Prediction Based on Pseudoknowledge Distillation by [Chakkrit Termritthikun](https://chakkritte.github.io/cv/).
 
 <p align="center">
   <img src="img/PKD.jpg" alt="PKD">
@@ -123,14 +123,14 @@ python main.py --student eeeac2 --teacher ofa595 --dataset osie --model_val_path
 
 If you use PKD or any part of this research, please cite our paper:
 ```
-@ARTICLE{9720080,
-  author={Umer, Ayaz and Termritthikun, Chakkrit and Qiu, Tie and Leong, Philip Heng Wai and Lee, Ivan},
+@ARTICLE{umer2022device,
+  author={Umer, Ayaz and Termritthikun, Chakkrit and Qiu, Tie and Leong, Philip H. W. and Lee, Ivan},
   journal={IEEE Transactions on Industrial Informatics}, 
-  title={On-device Saliency Prediction based on Pseudo Knowledge Distillation}, 
+  title="{On-Device Saliency Prediction Based on Pseudoknowledge Distillation}", 
   year={2022},
-  volume={},
-  number={},
-  pages={1-1},
+  volume={18},
+  number={9},
+  pages={6317-6325},
   doi={10.1109/TII.2022.3153365}}
 ```
 
