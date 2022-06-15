@@ -1,6 +1,6 @@
 # On-Device Saliency Prediction Based on Pseudoknowledge Distillation
 
-**This paper has been accepted to IEEE Transactions on Industrial Informatics (IEEE TII).**
+**This paper has been published to IEEE Transactions on Industrial Informatics (IEEE TII).**
 
 Paper: [IEEE Transactions on Industrial Informatics](https://doi.org/10.1109/TII.2022.3153365)
 
