@@ -123,8 +123,8 @@ print(args.dataset)
 if args.dataset == 'salicon':
     args.output_size = [480, 640]
     args.input_size = 384
-    train_dataset = data.SaliconDataset(args.dataset_dir, train=True, input_size_h=args.output_size[0], input_size_w=args.output_size[1])
-    val_dataset = data.SaliconDataset(args.dataset_dir, train=False, input_size_h=args.output_size[0], input_size_w=args.output_size[1])
+    train_dataset = data.SaliconDataset(args.dataset_dir, train=True, input_size_h=args.input_size, input_size_w=args.input_size)
+    val_dataset = data.SaliconDataset(args.dataset_dir, train=False, input_size_h=args.input_size, input_size_w=args.input_size)
 
 elif args.dataset == 'mit1003':
     args.output_size = [384, 384]
