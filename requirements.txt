@@ -1,7 +1,7 @@
 darmo==0.1.12
 timm==0.4.12
 kornia==0.6.4
-opencv-python==4.5.5.64
+opencv-python==4.8.1.78
 ptflops==0.6.9
 h5py==3.1.0
 scikit-image==0.17.2
